@@ -2,7 +2,6 @@ package ru.mirari.infra.mongo;
 
 import com.google.code.morphia.Morphia;
 import com.mongodb.Mongo;
-import groovy.util.ConfigObject;
 import org.apache.log4j.Logger;
 import org.codehaus.groovy.grails.commons.GrailsApplication;
 import org.springframework.beans.factory.annotation.Autowired;
