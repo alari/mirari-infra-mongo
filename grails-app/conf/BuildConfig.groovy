@@ -22,11 +22,16 @@ grails.project.dependency.resolution = {
         //mavenRepo "http://repository.codehaus.org"
         //mavenRepo "http://download.java.net/maven/2/"
         //mavenRepo "http://repository.jboss.com/maven2/"
+
+        // For Morphia
+        mavenRepo "http://morphia.googlecode.com/svn/mavenrepo/"
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
-        // runtime 'mysql:mysql-connector-java:5.1.5'
+        compile 'com.google.code.morphia:morphia:0.99'
+        compile 'cglib:cglib-nodep:[2.1_3,)'
+        compile 'com.thoughtworks.proxytoys:proxytoys:1.0'
     }
 
     plugins {
