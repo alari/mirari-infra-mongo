@@ -21,15 +21,20 @@ public class MorphiaDriver {
 
     @Autowired
     MorphiaDriver(GrailsApplication grailsApplication) throws UnknownHostException {
-        ConfigObject config = (ConfigObject) grailsApplication.getConfig().get("mirari");
-        config = (ConfigObject) config.get("infra");
-        config = (ConfigObject) config.get("mongo");
-        Map conf = config;
+        Map config = (Map) grailsApplication.getConfig().get("mirari");
+        config = (Map) config.get("infra");
+        config = (Map) config.get("mongo");
 
-        String mongoHost = conf.get("host").toString();
+        dbName = config.get("dbName").toString();
+
+        final String host = config.get("host") == null ? "" : config.get("host").toString();
+        final String username = config.get("username") == null ? "" : config.get("username").toString();
+        final String password = config.get("password") == null ? "" : config.get("password").toString();
+        final boolean dropDb = config.containsKey("dropDb") ? (Boolean) config.get("dropDb") : false;
+
         try {
-            if (mongoHost != null && !mongoHost.isEmpty()) {
-                mongo = new Mongo(mongoHost);
+            if (host != null && !host.isEmpty()) {
+                mongo = new Mongo(host);
             } else {
                 mongo = new Mongo();
             }
@@ -39,16 +44,10 @@ public class MorphiaDriver {
             throw e;
         }
 
-        String username = conf.get("username").toString();
-        String password = conf.get("password").toString();
-
-        dbName = conf.get("dbName").toString();
-
         if (!username.isEmpty() || !password.isEmpty()) {
             mongo.getDB(dbName).authenticate(username, password.toCharArray());
         }
 
-        boolean dropDb = (Boolean) conf.get("dropDb");
         if (dropDb) {
             System.out.println("Dropping Mongo database on startup...");
             mongo.getDB(dbName).dropDatabase();
